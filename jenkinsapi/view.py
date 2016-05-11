@@ -8,6 +8,7 @@ except ImportError:
     from urllib.parse import urlencode
 
 import logging
+import xml.etree.ElementTree
 
 from jenkinsapi.jenkinsbase import JenkinsBase
 from jenkinsapi.job import Job
@@ -169,6 +170,10 @@ class View(JenkinsBase):
 
     def get_nested_view_dict(self):
         return dict(self._get_nested_views())
+
+    # TODO: figure out the best way to do this
+    def get_description(self):
+        return xml.etree.ElementTree.fromstring(self.get_config()).find('description').text
 
     def get_config_xml_url(self):
         return '%s/config.xml' % self.baseurl
